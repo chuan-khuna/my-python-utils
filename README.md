@@ -120,5 +120,3 @@ import warnings
 
 warnings.filterwarnings('ignore')
 ```
-
-s
