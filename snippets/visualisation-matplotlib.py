@@ -26,28 +26,10 @@ _30k_text_palette_dict = {
 }
 
 _font_mono = "Inconsolata"
-_font_serif = "Canela Desk"
+_font_serif = "Canela"
 _font_sans = "Gill Sans Nova"
 
-sns.set_theme(style="whitegrid",
-              context="paper",
-              font_scale=1.0,
-              rc={
-                  "figure.figsize": (10.5, 4.5),
-                  "figure.dpi": 300,
-                  "savefig.dpi": 300,
-                  "grid.alpha": 0.1,
-                  "grid.color": "#1b262c",
-                  "grid.linewidth": 0.5,
-                  "font.family": _font_mono,
-                  "lines.solid_capstyle": "projecting",
-                  "lines.solid_joinstyle": "bevel",
-                  "axes.facecolor": "#FAF7F4",
-                  "figure.facecolor": "#FAF7F4",
-                  "savefig.facecolor": "#FAF7F4",
-                  "savefig.bbox": "tight",
-                  "savefig.pad_inches": 0.1,
-              })
+plt.style.use("-30k.mplstyle")
 
 _30k = list(_30k_main_palette_dict.values())
 sns.set_palette(_30k)
