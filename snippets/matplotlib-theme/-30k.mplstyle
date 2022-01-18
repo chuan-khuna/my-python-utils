@@ -20,6 +20,7 @@
 ## Base font size for 5 inches height figure
 # matpltolib base font size: 12
 # customised base font size: 12 (scale=1.618)
+# [ 2.8,  4.6,  7.4, 12. , 19.4, 31.4, 50.8]
 ## Figure ratio
 # based on 21:9 (2.33:1) but a little wider for sup_title offset
 
@@ -66,7 +67,7 @@ lines.solid_capstyle : projecting
 lines.solid_joinstyle : bevel
 lines.linewidth : 2
 lines.markeredgewidth : 0.5
-lines.markersize : 8
+lines.markersize : 7.4
 
 
 ## Typography
@@ -78,6 +79,6 @@ text.color: 32363A
 axes.titlelocation : left
 axes.titlesize : 12
 axes.titlecolor : 32363A
-axes.titlepad : 8.0
+axes.titlepad : 7.4
 axes.labelpad : 4.0
-figure.titlesize : 19.4`
+figure.titlesize : 19.4

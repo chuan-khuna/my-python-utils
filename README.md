@@ -15,9 +15,9 @@ _30k_main_palette_dict = {
     "blue": "#202F66",
     "orange": "#FF7048",
     "purple": "#8B87EA",
-    "yellow": "#F3D36E",
     "pink": "#D869AB",
     "cyan": "#54C9B9",
+    "yellow": "#F3D36E",
 }
 
 _30k_danger_safe_palette_dict = {
@@ -72,9 +72,9 @@ _30k_main_palette_dict = {
     "blue": "#202F66",
     "orange": "#FF7048",
     "purple": "#8B87EA",
-    "yellow": "#F3D36E",
     "pink": "#D869AB",
     "cyan": "#54C9B9",
+    "yellow": "#F3D36E",
 }
 
 _30k_danger_safe_palette_dict = {
