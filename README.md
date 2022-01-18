@@ -2,6 +2,8 @@
 
 ## visualisatoin - matplotlib (-30k)
 
+see more: [-30k theme](/snippets/matplotlib-theme/README.md)
+
 ```py
 import numpy as np
 import pandas as pd
@@ -58,8 +60,6 @@ Untitled[a-zA-Z0-9].ipynb
 ```
 
 ## visualisation - matplotlib (seaborn version)
-
-see more: [-30k theme](/snippets/matplotlib-theme/README.md)
 
 ```py
 import numpy as np
