@@ -24,3 +24,7 @@ fig.suptitle("Lorem ipsum dolor sit amet, consectetur adipiscing elit.\nSed ut p
 ## Reference
 
 - https://matplotlib.org/stable/tutorials/introductory/customizing.html?highlight=rc
+
+## Issues
+
+- Problems with `*.ttc` font in macOS: cannot set font weight to bold.
