@@ -33,8 +33,8 @@ _30k_text_palette_dict = {
 }
 
 _font_mono = "Inconsolata"
-_font_serif = "Canela"
-_font_sans = "Gill Sans Nova"
+_font_serif = "Canela Text"
+_font_sans = "Gill Sans"
 
 plt.style.use("-30k.mplstyle")
 
@@ -90,8 +90,8 @@ _30k_text_palette_dict = {
 }
 
 _font_mono = "Inconsolata"
-_font_serif = "Canela"
-_font_sans = "Gill Sans Nova"
+_font_serif = "Canela Text"
+_font_sans = "Gill Sans"
 
 sns.set_theme(style="whitegrid",
               context="paper",
