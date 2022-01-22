@@ -49,6 +49,7 @@ axes.spines.left : True
 axes.spines.bottom : True
 axes.spines.top : False
 axes.spines.right : False
+axes.axisbelow : True 
 
 # Tick
 xtick.direction : out
