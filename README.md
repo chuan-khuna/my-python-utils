@@ -9,6 +9,10 @@ import numpy as np
 import pandas as pd
 
 import matplotlib.pyplot as plt
+
+import matplotlib
+from matplotlib import patheffects
+
 import seaborn as sns
 
 _30k_main_palette_dict = {
@@ -40,9 +44,10 @@ plt.style.use("-30k.mplstyle")
 
 _30k = list(_30k_main_palette_dict.values())
 sns.set_palette(_30k)
+# ← → ↓ ↑
+
 
 import warnings
-
 warnings.filterwarnings('ignore')
 ```
 
