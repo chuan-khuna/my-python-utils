@@ -85,13 +85,14 @@ file: `-30k.mplstyle`
 # bg_cream: #FAF7F4
 ## Typography
 # font_main: Inconsolata
-# font_sans: Noto
+# font_sans: Metric
 # font_serif: Canela Text
 # font_mono: Inconsolata
 ## Base font size for 5 inches height figure
-# matpltolib base font size: 12
-# customised base font size: 12 (scale=1.618)
-# [ 2.8,  4.6,  7.4, 12. , 19.4, 31.4, 50.8]
+# the annotation text of FT use around 5% of vertical space
+# matpltolib base font size: 14
+# customised base font size: 14 (scale=1.25)
+# [ 7.2,  9. , 11.2, 14. , 17.5, 21.9, 27.3]
 ## Figure ratio
 # based on 21:9 (2.33:1) but a little wider for sup_title offset
 
@@ -138,27 +139,31 @@ ytick.labelsize : small
 lines.solid_capstyle : projecting
 lines.solid_joinstyle : bevel
 lines.linewidth : 2
-lines.markeredgewidth : 0.5
-lines.markersize : 7.4
+lines.markeredgewidth : 0.75
+lines.markersize : 7.2
 
 
 ## Typography
-font.family : Inconsolata
-font.size : 12
+font.family : MetricHPEXS
+font.size : 14
 text.color: 32363A
 
 # Title
 axes.titlelocation : left
-axes.titlesize : 12
+axes.titlesize : 14
 axes.titlecolor : 32363A
-axes.titlepad : 7.4
-axes.labelpad : 4.0
-figure.titlesize : 19.4
+axes.titlepad : 9
+axes.labelpad : 4.5
+figure.titlesize : 17.5
 
 # Legend
 # Remove the box edge colour
 legend.shadow : False
 legend.edgecolor : None
+
+# Patches
+patch.linewidth : 0
+patch.edgecolor : None
 ```
 
 ## visualisation - matplotlib (seaborn version)
