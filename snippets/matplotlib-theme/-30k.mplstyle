@@ -89,3 +89,7 @@ figure.titlesize : 17.5
 # Remove the box edge colour
 legend.shadow : False
 legend.edgecolor : None
+
+# Patches
+patch.linewidth : 0
+patch.edgecolor : None
