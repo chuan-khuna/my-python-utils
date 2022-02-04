@@ -21,6 +21,17 @@ fig.suptitle("Lorem ipsum dolor sit amet, consectetur adipiscing elit.\nSed ut p
              x=ax.get_position().x0/2, y=ax.get_position().y1*1.1)
 ```
 
+## path effect
+
+```py
+path_width = 2.5
+path_color = "white"
+path_alpha = 0.8
+
+path_effects=[patheffects.Stroke(linewidth=path_width, foreground=path_color, alpha=path_alpha),
+                            patheffects.Normal()]
+```
+
 ## Reference
 
 - https://matplotlib.org/stable/tutorials/introductory/customizing.html?highlight=rc
