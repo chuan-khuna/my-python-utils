@@ -26,20 +26,27 @@ _30k_text = {
     "text_black": "#32363A",
     "text_lighter1": "#6F7273",
     "text_lighter2": "#8B8E8F",
+    "grey1": "#aeb7bc",
+    "grey2": "#c3cace",
     "bg_cream": "#FAF7F4"
 }
 
 _font_mono = "Inconsolata"
 _font_serif = "Canela Text"
 _font_sans = "Gill Sans"
-_path_effects = [patheffects.Stroke(linewidth=2.5, foreground="white", alpha=0.8), patheffects.Normal()]
 
 plt.style.use("-30k.mplstyle")
 
 _30k = list(_30k_main.values())
 sns.set_palette(_30k)
+
 # ← → ↓ ↑
 
 
+def _path_effects(w=2.5, c=_30k_text['bg_cream'], a=0.8):
+    return [patheffects.Stroke(linewidth=w, foreground=c, alpha=a), patheffects.Normal()]
+
+
 import warnings
+
 warnings.filterwarnings('ignore')
