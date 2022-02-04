@@ -62,7 +62,7 @@ ytick.labelcolor : 32363A
 xtick.major.size : 3.5
 xtick.major.width : 0.5
 ytick.major.size : 3.5
-xtick.major.width : 0.5
+ytick.major.width : 0.5
 xtick.labelsize : small
 ytick.labelsize : small
 
@@ -84,7 +84,7 @@ axes.titlelocation : left
 axes.titlesize : 14
 axes.titlecolor : 32363A
 axes.titlepad : 9
-axes.labelpad : 4.5
+axes.labelpad : 5.0
 figure.titlesize : 17.5
 
 # Legend
