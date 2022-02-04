@@ -45,7 +45,7 @@ grid.linestyle: -
 # Axes
 axes.edgecolor : B3B5B6
 axes.grid : True
-axes.linewidth : 0.6
+axes.linewidth : 0.5
 axes.spines.left : True
 axes.spines.bottom : True
 axes.spines.top : False
@@ -59,8 +59,10 @@ xtick.color : B3B5B6
 ytick.color : B3B5B6
 xtick.labelcolor : 32363A
 ytick.labelcolor : 32363A
-xtick.major.size : 3
-ytick.major.size : 3
+xtick.major.size : 3.5
+xtick.major.width : 0.5
+ytick.major.size : 3.5
+xtick.major.width : 0.5
 xtick.labelsize : small
 ytick.labelsize : small
 
