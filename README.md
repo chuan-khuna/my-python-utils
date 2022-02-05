@@ -58,3 +58,14 @@ import warnings
 
 warnings.filterwarnings('ignore')
 ```
+
+## .gitignore
+
+```txt
+.DS_Store
+.ipynb_checkpoints
+*.pyc
+
+Untitled.ipynb
+Untitled[a-zA-Z0-9].ipynb
+```
