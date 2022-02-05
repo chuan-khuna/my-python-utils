@@ -1,6 +1,6 @@
 # My Python code snippets
 
-## visualisatoin - matplotlib (-30k)
+## visualisation - matplotlib (-30k)
 
 see more: [-30k theme](/snippets/matplotlib-theme/README.md) | [-30k.mplstyle](https://github.com/chuan-khuna/my-python-snippets/blob/main/snippets/matplotlib-theme/-30k.mplstyle)
 
@@ -59,7 +59,7 @@ import warnings
 warnings.filterwarnings('ignore')
 ```
 
-## .gitignore
+## `.gitignore`
 
 ```txt
 .DS_Store
