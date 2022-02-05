@@ -35,6 +35,7 @@ _30k_text = {
     "text_lighter2": "#8B8E8F",
     "grey1": "#aeb7bc",
     "grey2": "#c3cace",
+    "grey3": "#d9dde0",
     "bg_cream": "#FAF7F4"
 }
 
@@ -52,7 +53,6 @@ sns.set_palette(_30k)
 
 def _30k_path_effects(linewidth=2.5, foreground=_30k_text['bg_cream'], alpha=0.8, **kwargs):
     return [patheffects.withStroke(linewidth=linewidth, foreground=foreground, alpha=alpha, **kwargs)]
-
 
 import warnings
 
