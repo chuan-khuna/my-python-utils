@@ -44,7 +44,7 @@ sns.set_palette(_30k)
 # ← → ↓ ↑
 
 
-def _30k_path_effects(linewidth=2.5, foreground=_30k_text['bg_cream'], alpha=0.8, **kwargs):
+def _30k_path_effects(linewidth=2.5, foreground=_30k_text['bg_cream'], alpha=1.0, **kwargs):
     return [patheffects.withStroke(linewidth=linewidth, foreground=foreground, alpha=alpha, **kwargs)]
 
 import warnings
