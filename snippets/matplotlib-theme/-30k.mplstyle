@@ -49,6 +49,8 @@ grid.linestyle: -
 
 # Axes
 axes.edgecolor: B3B5B6
+axes.labelcolor: 32363A
+axes.labelsize: medium
 axes.grid: True
 axes.linewidth: 0.5
 axes.spines.left: True
