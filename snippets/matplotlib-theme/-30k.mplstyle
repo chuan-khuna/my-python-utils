@@ -70,8 +70,8 @@ xtick.major.size: 3.5
 xtick.major.width: 0.5
 ytick.major.size: 3.5
 ytick.major.width: 0.5
-xtick.labelsize: x-small
-ytick.labelsize: x-small
+xtick.labelsize: small
+ytick.labelsize: small
 
 # Line
 lines.solid_capstyle: projecting
