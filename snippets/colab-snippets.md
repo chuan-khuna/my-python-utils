@@ -61,3 +61,27 @@ sns.set_palette(_30k)
 def _30k_path_effects(linewidth=2.5, foreground=_30k_text['bg_cream'], alpha=1.0, **kwargs):
     return [patheffects.withStroke(linewidth=linewidth, foreground=foreground, alpha=alpha, **kwargs)]
 ```
+
+# Google Drive
+
+```py
+from google.colab import drive
+drive.mount('/content/gdrive')
+google_drive_path = "/content/gdrive/MyDrive/"
+```
+
+# Tensorflow
+
+```py
+# modelling utils
+
+import tensorflow as tf
+import tensorflow_datasets as tfds
+
+# set seed
+seed_ = 42
+tf.random.set_seed(seed_)
+np.random.seed(seed_)
+
+from sklearn.metrics import confusion_matrix, classification_report
+```
