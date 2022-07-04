@@ -1,7 +1,7 @@
 # Install TF
 
 ```txt
-# !pip3 install tensorflow tensorflow-gpu tensorflow-datasets
+# !pip3 install tensorflow tensorflow-gpu tensorflow-datasets matplotlib
 ```
 
 # numpy and pandas
