@@ -1,7 +1,7 @@
 # Install TF
 
 ```txt
-# !pip3 install tensorflow tensorflow-gpu tensorflow-datasets 
+# !pip3 install tensorflow==2.8.2 tensorflow-gpu==2.8.2 tensorflow-datasets -U
 # !pip3 install -U matplotlib
 ```
 
@@ -25,6 +25,7 @@ warnings.filterwarnings('ignore')
 # Google Drive
 
 ```py
+import os
 from google.colab import drive
 drive.mount('/content/gdrive')
 google_drive_path = "/content/gdrive/MyDrive/"
@@ -35,14 +36,16 @@ google_drive_path = "/content/gdrive/MyDrive/"
 
 ```py
 # modelling utils
-
 import tensorflow as tf
 import tensorflow_datasets as tfds
 
 # set seed
-seed_ = 42
+seed_ = 1607
 tf.random.set_seed(seed_)
 np.random.seed(seed_)
+
+# tensorflow image utils
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 from sklearn.metrics import confusion_matrix, classification_report
 ```
@@ -51,6 +54,8 @@ from sklearn.metrics import confusion_matrix, classification_report
 # Visualisation
 
 ```py
+# Visualisation setting
+
 _30k_main = {
     "blue": "#202F66",
     "orange": "#FF7048",
@@ -79,7 +84,8 @@ _font_mono = "Inconsolata"
 _font_serif = "Canela Text"
 _font_sans = "Gill Sans"
 
-plt.style.use("-30k.mplstyle")
+dataset_dir = google_drive_path + "/model_race/"
+plt.style.use(f"{dataset_dir}/-30k.mplstyle")
 
 _30k = list(_30k_main.values())
 sns.set_palette(_30k)
@@ -88,4 +94,11 @@ sns.set_palette(_30k)
 
 def _30k_path_effects(linewidth=2.5, foreground=_30k_text['bg_cream'], alpha=1.0, **kwargs):
     return [patheffects.withStroke(linewidth=linewidth, foreground=foreground, alpha=alpha, **kwargs)]
+```
+
+# Set project path
+
+```py
+# change directory to the project path
+# os.chdir()
 ```
