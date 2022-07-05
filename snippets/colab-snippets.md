@@ -2,7 +2,7 @@
 
 ```txt
 # !pip3 install tensorflow==2.8.2 tensorflow-gpu==2.8.2 tensorflow-datasets -U
-# !pip3 install -U matplotlib
+# !pip3 install -U seaborn matplotlib
 ```
 
 # numpy and pandas
