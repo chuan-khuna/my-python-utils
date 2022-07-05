@@ -96,6 +96,16 @@ def _30k_path_effects(linewidth=2.5, foreground=_30k_text['bg_cream'], alpha=1.0
     return [patheffects.withStroke(linewidth=linewidth, foreground=foreground, alpha=alpha, **kwargs)]
 ```
 
+```py
+# load fonts
+font_dir = [f"{google_drive_path}/code_assets/fonts/"]
+for font in matplotlib.font_manager.findSystemFonts(font_dir):
+    matplotlib.font_manager.fontManager.addfont(font)
+
+# Override Metric with Google Outfit
+# matplotlib.rcParams['font.family'] = 'outfit'
+```
+
 # Set project path
 
 ```py
