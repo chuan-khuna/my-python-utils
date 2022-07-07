@@ -57,7 +57,7 @@ warnings.filterwarnings('ignore')
 
 def mpl_import_fonts(font_paths):
     for font in matplotlib.font_manager.findSystemFonts(font_paths):
-        matplotlib.font_manager.fontManage.addfont(font)
+        matplotlib.font_manager.fontManager.addfont(font)
 
     # set font
     # rcParams['font.family'] = 'Inconsolata'
