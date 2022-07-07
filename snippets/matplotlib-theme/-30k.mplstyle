@@ -1,3 +1,6 @@
+### Matplotlib Theme ###
+# inspired by Sawano Hiroyuki and Financial Times
+
 ### Colour Palette ###
 ## Accent Colours ##
 # blue: #202F66
@@ -25,7 +28,7 @@
 # the annotation text of FT use around 5% of vertical space
 # matpltolib base font size: 14
 # customised base font size: 14 (scale=1.25)
-# [ 7.2,  9. , 11.2, 14. , 17.5, 21.9, 27.3]
+# [ 7.2, 9. , 11.2, 14. , 17.5, 21.9, 27.3]
 
 ### Figure ratio ###
 # based on 21:9 (2.33:1) but a little wider for sup_title offset

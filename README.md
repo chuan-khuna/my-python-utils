@@ -1,6 +1,12 @@
 # My Python code snippets
 
-## visualisation - matplotlib (-30k)
+## To import theme
+
+```py
+from vis_utils import *
+```
+
+## visualisation - matplotlib (-30k) (Deprecated)
 
 see more: [-30k theme](/snippets/matplotlib-theme/README.md) | [-30k.mplstyle](https://github.com/chuan-khuna/my-python-snippets/blob/main/snippets/matplotlib-theme/-30k.mplstyle)
 
@@ -120,7 +126,7 @@ savefig.pad_inches: 0.1
 grid.alpha: 0.1
 grid.color: 32363A
 grid.linewidth: 0.5
-grid.linestyle: - 
+grid.linestyle: -
 
 # Axes
 axes.edgecolor: B3B5B6
@@ -130,7 +136,7 @@ axes.spines.left: True
 axes.spines.bottom: True
 axes.spines.top: False
 axes.spines.right: False
-axes.axisbelow: True 
+axes.axisbelow: True
 
 # Tick
 xtick.direction: out

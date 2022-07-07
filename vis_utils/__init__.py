@@ -40,26 +40,24 @@ font_sans = "Gill Sans"
 
 plt.style.use("./vis_utils/theme.mplstyle")
 
-arrows = {
-    'left': '←',
-    'right': '→',
-    'up': '↑',
-    'down': '↓'
-}
+arrows = {'left': '←', 'right': '→', 'up': '↑', 'down': '↓'}
 
 theme_palette = list(main_colors.values())
 sns.set_palette(theme_palette)
+
 
 def theme_path_effects(linewidth=2.5, foreground=text_colors['bg_cream'], alpha=1.0, **kwargs):
     return [patheffects.withStroke(linewidth=linewidth, foreground=foreground, alpha=alpha, **kwargs)]
 
 
 import warnings
+
 warnings.filterwarnings('ignore')
+
 
 def mpl_import_fonts(font_paths):
     for font in matplotlib.font_manager.findSystemFonts(font_paths):
         matplotlib.font_manager.fontManage.addfont(font)
-    
+
     # set font
     # rcParams['font.family'] = 'Inconsolata'
