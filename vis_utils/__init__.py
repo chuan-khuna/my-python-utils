@@ -6,6 +6,9 @@ import matplotlib.pyplot as plt
 import matplotlib
 from matplotlib import patheffects
 import seaborn as sns
+import warnings
+
+warnings.filterwarnings('ignore')
 
 main_colors = {
     "blue": "#202F66",
@@ -45,11 +48,6 @@ sns.set_palette(theme_palette)
 
 def theme_path_effects(linewidth=2.5, foreground=text_colors['bg_cream'], alpha=1.0, **kwargs):
     return [patheffects.withStroke(linewidth=linewidth, foreground=foreground, alpha=alpha, **kwargs)]
-
-
-import warnings
-
-warnings.filterwarnings('ignore')
 
 
 def mpl_import_fonts(font_paths):
