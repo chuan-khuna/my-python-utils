@@ -2,12 +2,9 @@
 
 import numpy as np
 import pandas as pd
-
 import matplotlib.pyplot as plt
-
 import matplotlib
 from matplotlib import patheffects
-
 import seaborn as sns
 
 main_colors = {
