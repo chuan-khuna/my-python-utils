@@ -38,7 +38,8 @@ font_mono = "Incosolata"
 font_serif = "Canela Text"
 font_sans = "Gill Sans"
 
-plt.style.use("./vis_utils/theme.mplstyle")
+# importing theme file from a relative path
+plt.style.use(os.path.join(os.path.dirname(__file__), '..', "vis_utils/theme.mplstyle"))
 
 arrows = {'left': '←', 'right': '→', 'up': '↑', 'down': '↓'}
 
