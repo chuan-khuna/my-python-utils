@@ -1,6 +1,6 @@
 import re
 
-def remove_user(text)
+def remove_user(text):
     # replace user name
     pattern = re.compile("\@[a-zA-Z0-9_+=]{3,}")
     return re.sub(pattern, "", text)
