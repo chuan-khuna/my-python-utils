@@ -54,6 +54,9 @@ font_dir = [f"{google_drive_path}/code_assets/fonts/"]
 for font in matplotlib.font_manager.findSystemFonts(font_dir):
     matplotlib.font_manager.fontManager.addfont(font)
 
+# import my visualisation utils
+from gdrive.MyDrive.code_assets.vis_utils import *
+
 # Override Metric with Google Outfit
 # matplotlib.rcParams['font.family'] = 'outfit'
 ```
@@ -62,5 +65,5 @@ for font in matplotlib.font_manager.findSystemFonts(font_dir):
 
 ```py
 # change directory to the project path
-# os.chdir()
+# os.chdir(google_drive_path + "...")
 ```
