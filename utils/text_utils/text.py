@@ -2,6 +2,7 @@ import re
 import html
 import string
 
+
 def remove_urls(text):
     # https://regex101.com/r/hG9t0Q/1
     pattern = re.compile("https?:\/\/.*?[\s+]")
