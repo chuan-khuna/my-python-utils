@@ -1,6 +1,6 @@
 import re
 import html
-
+import string
 
 def remove_urls(text):
     # https://regex101.com/r/hG9t0Q/1
@@ -21,3 +21,7 @@ def remove_ending_space(text):
 
 def unescape_html(text):
     return html.unescape(text)
+
+
+def remove_punctuations(text):
+    return text.translate(str.maketrans("", "", string.punctuation))
