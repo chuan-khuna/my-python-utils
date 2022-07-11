@@ -7,7 +7,7 @@ def remove_urls(text):
     # https://regex101.com/r/hG9t0Q/1
     # https://regexr.com/3e6m0
     # https://regexr.com/37i6s
-    pattern = re.compile("https?:\/\/.*?[\s+]")
+    pattern = re.compile("(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)")
     return re.sub(pattern, "", text)
 
 
