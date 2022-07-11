@@ -5,6 +5,8 @@ import string
 
 def remove_urls(text):
     # https://regex101.com/r/hG9t0Q/1
+    # https://regexr.com/3e6m0
+    # https://regexr.com/37i6s
     pattern = re.compile("https?:\/\/.*?[\s+]")
     return re.sub(pattern, "", text)
 
