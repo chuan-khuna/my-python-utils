@@ -15,6 +15,9 @@ class TextCleaner:
         self.delimiter = delimiter
         self._regex_patterns = None
         self._default_regex_patterns = DEFAULT_REGEX_PATTERNS
+        self._vocab = None
+        self._inverse_vocab = None
+        self.out_of_vocab_token = '<oov>'
 
     @property
     def default_regex_patterns(self):
@@ -25,15 +28,28 @@ class TextCleaner:
         return self._regex_patterns
 
     @regex_patterns.setter
-    def regex_patterns(self, regex_patterns):
-        print("Called regex patterns setters")
+    def regex_patterns(self, regex_patterns: list[tuple[str, str]]):
         self._regex_patterns = regex_patterns
+
+    @property
+    def vocab(self):
+        return self._vocab
+
+    @vocab.setter
+    def vocab(self, vocab: dict[str:int]):
+        self._vocab = vocab
+        self._inverse_vocab = {}
+        for k, v in vocab.items():
+            self._inverse_vocab[v] = k
+
+    @property
+    def inverse_vocab(self):
+        return self._inverse_vocab
 
     def _get_regex_patterns(self) -> list:
         if self.regex_patterns is None:
             return self._default_regex_patterns
-        else:
-            return self.regex_patterns
+        return self.regex_patterns
 
     def clean(self, text: str) -> str:
         for pattern, replace in self._get_regex_patterns():
@@ -57,3 +73,29 @@ class TextCleaner:
             return [word for word in words if word not in self.stop_words]
         else:
             return words
+
+    def join(self, words: list[str]) -> str:
+        return self.delimiter.join(words)
+
+    def _map_key_to_value(self, sequence, dict_):
+        new_sequence = []
+        for k in sequence:
+            if k in dict_.keys():
+                new_sequence.append(dict_[k])
+            else:
+                new_sequence.append(self.out_of_vocab_token)
+        return new_sequence
+
+    def text_to_sequence(self, text: list[str]) -> list[int]:
+        if self.vocab is None:
+            raise AttributeError(
+                "Vocabulary is None. Please set vocabulary before converting text to sequence")
+        sequence = self._map_key_to_value(text, self.vocab)
+        return sequence
+
+    def sequence_to_text(self, sequence: list[int]) -> list[str]:
+        if self.vocab is None:
+            raise AttributeError(
+                "Vocabulary is None. Please set vocabulary before converting text to sequence")
+        sequence = self._map_key_to_value(sequence, self.inverse_vocab)
+        return sequence

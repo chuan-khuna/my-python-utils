@@ -20,19 +20,34 @@ def test_default_instance_attributes():
     assert cleaner.regex_patterns is None
     # add more patterns here
     assert cleaner.default_regex_patterns == DEFAULT_REGEX_PATTERNS
+    assert cleaner.vocab is None
+    assert cleaner.out_of_vocab_token == '<oov>'
 
-
-# default pattern should be protected
+###
+# test protected attributes
+###
 def test_default_regex_should_not_be_able_to_set():
     cleaner = TextCleaner()
     with pytest.raises(AttributeError):
         cleaner.default_regex_patterns = CUSTOMISED_PATTERN
 
 
+# regex_patterns is protected
 def test_customised_patterns_setter():
     cleaner = TextCleaner()
-    # regex_patterns is protected
     cleaner.regex_patterns = CUSTOMISED_PATTERN
+
+
+def test_inverse_vocab_should_not_be_able_to_set():
+    cleaner = TextCleaner()
+    with pytest.raises(AttributeError):
+        cleaner.inverse_vocab = {1: 'inverse', 2: 'vocab'}
+
+
+def test_inverse_vocab_should_be_matched_with_vocab():
+    cleaner = TextCleaner()
+    cleaner.vocab = {'this': 1, 'is': 2, 'vocab': 3}
+    assert cleaner.inverse_vocab == {1: 'this', 2: 'is', 3: 'vocab'}
 
 
 def test_regex_function_should_use_default_regex_if_patterns_is_none():
@@ -117,3 +132,48 @@ def test_remove_stop_words_should_work_properly():
     stop_words = ['a', 'c']
     cleaner.stop_words = stop_words
     assert cleaner.remove_stop_words(words) == ['b', 'd']
+
+
+def test_join_words_with_delimiter():
+    cleaner = TextCleaner()
+    words = ['a', 'b', 'c', 'd']
+    delimiter_splited_text = 'a|b|c|d|'
+    return cleaner.join(words) == delimiter_splited_text
+
+def test_if_vocab_is_none_raise_error():
+    words = ['a', 'b', 'c', 'd']
+    cleaner = TextCleaner()
+    with pytest.raises(AttributeError):
+        cleaner.text_to_sequence(words)
+
+
+def test_convert_tokenised_text_to_sequence_of_indices():
+    cleaner = TextCleaner()
+    words = ['a', 'b', 'c', 'd']
+    vocab = {'a': 1, 'b': 2, 'c': 3, 'd': 4}
+    sequence = [1, 2, 3, 4]
+    cleaner.vocab = vocab
+    assert cleaner.text_to_sequence(words) == sequence
+
+def test_convert_text_to_sequence_out_of_vocab_token():
+    cleaner = TextCleaner()
+    words = ['a', 'qwert', 'b', 'c', 'd', 'out of vocab']
+    vocab = {'a': 1, 'b': 2, 'c': 3, 'd': 4}
+    sequence = [1, '<oov>', 2, 3, 4, '<oov>']
+    cleaner.vocab = vocab
+    assert cleaner.text_to_sequence(words) == sequence
+
+def test_convert_sequence_to_text():
+    cleaner = TextCleaner()
+    words = ['a', 'b', 'c', 'd']
+    vocab = {'a': 1, 'b': 2, 'c': 3, 'd': 4}
+    sequence = [1, 2, 3, 4]
+    cleaner.vocab = vocab
+    assert cleaner.sequence_to_text(sequence) == words
+
+def test_convert_text_to_sequence_out_of_vocab_token():
+    cleaner = TextCleaner()
+    vocab = {'a': 1, 'b': 2, 'c': 3, 'd': 4}
+    sequence = [1, '<oov>', 2, 3, 4, '<oov>']
+    cleaner.vocab = vocab
+    assert cleaner.sequence_to_text(sequence) == ['a', '<oov>', 'b', 'c', 'd', '<oov>']
