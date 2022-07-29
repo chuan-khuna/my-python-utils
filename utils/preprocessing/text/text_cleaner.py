@@ -3,8 +3,11 @@ import re
 # https://regexr.com/3e6m0
 # https://regexr.com/37i6s
 DEFAULT_REGEX_PATTERNS = [
-    (r'^\s*', ''), (r'\s*$', ''), (r"\s{2,}", " "), 
-    (r"(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)", '')]
+    (r'^\s*', ''), (r'\s*$', ''), (r"\s{2,}", " "),
+    (r"(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)",
+     '')
+]
+
 
 class TextCleaner:
     """A string preprocessor including:
@@ -13,7 +16,7 @@ class TextCleaner:
         n gram generator
     """
 
-    def __init__(self, stop_words=None, delimiter='|'):
+    def __init__(self, stop_words: list = None, delimiter: str ='|'):
         self.stop_words = stop_words
         self.delimiter = delimiter
         self._regex_patterns = None
@@ -39,9 +42,9 @@ class TextCleaner:
         return self._vocab
 
     @vocab.setter
-    def vocab(self, vocab: dict[str:int]):
+    def vocab(self, vocab: dict[str, int]):
         self._vocab = vocab
-        self._inverse_vocab = {}
+        self._inverse_vocab: dict[int, str] = {}
         for k, v in vocab.items():
             self._inverse_vocab[v] = k
 
@@ -80,7 +83,7 @@ class TextCleaner:
     def join(self, words: list[str]) -> str:
         return self.delimiter.join(words)
 
-    def _map_key_to_value(self, sequence, dict_):
+    def _map_key_to_value(self, sequence: list[str | int], dict_):
         new_sequence = []
         for k in sequence:
             if k in dict_.keys():
