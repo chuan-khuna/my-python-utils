@@ -2,7 +2,9 @@ from bleach import clean
 from utils.preprocessing.text.text_cleaner import TextCleaner
 import pytest
 
-DEFAULT_REGEX_PATTERNS = [(r'^\s*', ''), (r'\s*$', ''), (r"\s{2,}", " ")]
+DEFAULT_REGEX_PATTERNS = [
+    (r'^\s*', ''), (r'\s*$', ''), (r"\s{2,}", " "), 
+    (r"(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)", '')]
 CUSTOMISED_PATTERN = [(r'\s', 'new pattern')]
 
 
@@ -68,8 +70,6 @@ def test_regex_cleaner_function_exist():
 
 def test_cleaned_text_should_not_contain_leading_and_ending_spaces():
     cleaner = TextCleaner()
-    # leading and ending patterns
-    cleaner.regex_patterns = DEFAULT_REGEX_PATTERNS
     expected = "text\tto\nclean"
 
     assert cleaner.clean(f"  {expected}  ") == expected
@@ -81,9 +81,7 @@ def test_cleaned_text_should_not_contain_leading_and_ending_spaces():
 # TODO: Add more regex patterns test
 def test_cleaned_text_should_not_contain_multiple_spaces_inside():
     cleaner = TextCleaner()
-    cleaner.regex_patterns = DEFAULT_REGEX_PATTERNS
     assert cleaner.clean("text\t\nto  \nclean") == "text to clean"
-
 
 def test_n_gram_function():
     words = ['a', 'b', 'c']
