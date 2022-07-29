@@ -6,6 +6,7 @@ DEFAULT_REGEX_PATTERNS = [
     (r'^\s*', ''), (r'\s*$', ''), (r"\s{2,}", " "), 
     (r"(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)", '')]
 CUSTOMISED_PATTERN = [(r'\s', 'new pattern')]
+OOV_TOKEN = '<OOV>'
 
 
 def test_initialise_obj_without_problem():
@@ -23,7 +24,7 @@ def test_default_instance_attributes():
     # add more patterns here
     assert cleaner.default_regex_patterns == DEFAULT_REGEX_PATTERNS
     assert cleaner.vocab is None
-    assert cleaner.out_of_vocab_token == '<oov>'
+    assert cleaner.out_of_vocab_token == OOV_TOKEN
 
 ###
 # test protected attributes
@@ -157,7 +158,7 @@ def test_convert_text_to_sequence_out_of_vocab_token():
     cleaner = TextCleaner()
     words = ['a', 'qwert', 'b', 'c', 'd', 'out of vocab']
     vocab = {'a': 1, 'b': 2, 'c': 3, 'd': 4}
-    sequence = [1, '<oov>', 2, 3, 4, '<oov>']
+    sequence = [1, OOV_TOKEN, 2, 3, 4, OOV_TOKEN]
     cleaner.vocab = vocab
     assert cleaner.text_to_sequence(words) == sequence
 
@@ -172,6 +173,6 @@ def test_convert_sequence_to_text():
 def test_convert_text_to_sequence_out_of_vocab_token():
     cleaner = TextCleaner()
     vocab = {'a': 1, 'b': 2, 'c': 3, 'd': 4}
-    sequence = [1, '<oov>', 2, 3, 4, '<oov>']
+    sequence = [1, OOV_TOKEN, 2, 3, 4, OOV_TOKEN]
     cleaner.vocab = vocab
-    assert cleaner.sequence_to_text(sequence) == ['a', '<oov>', 'b', 'c', 'd', '<oov>']
+    assert cleaner.sequence_to_text(sequence) == ['a', OOV_TOKEN, 'b', 'c', 'd', OOV_TOKEN]

@@ -7,6 +7,7 @@ DEFAULT_REGEX_PATTERNS = [
     (r"(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)",
      '')
 ]
+OOV_TOKEN = '<OOV>'
 
 
 class TextCleaner:
@@ -23,7 +24,7 @@ class TextCleaner:
         self._default_regex_patterns = DEFAULT_REGEX_PATTERNS
         self._vocab = None
         self._inverse_vocab = None
-        self.out_of_vocab_token = '<oov>'
+        self.out_of_vocab_token = OOV_TOKEN
 
     @property
     def default_regex_patterns(self):
