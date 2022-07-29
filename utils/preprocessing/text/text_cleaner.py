@@ -1,9 +1,16 @@
 import re
+
+################################
+# regex note
+################################
+# \n and \t -> white space
+# urls
 # https://regex101.com/r/hG9t0Q/1
 # https://regexr.com/3e6m0
 # https://regexr.com/37i6s
+
 DEFAULT_REGEX_PATTERNS = [
-    (r'^\s*', ''), (r'\s*$', ''), (r"\s{2,}", " "),
+    (r"[\n|\r|\t]", " "), (r'^\s*', ''), (r'\s*$', ''), (r"(?:\s)(\s+)", " "),
     (r"(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)",
      '')
 ]
@@ -17,7 +24,7 @@ class TextCleaner:
         n gram generator
     """
 
-    def __init__(self, stop_words: list = None, delimiter: str ='|'):
+    def __init__(self, stop_words: list = None, delimiter: str = '|'):
         self.stop_words = stop_words
         self.delimiter = delimiter
         self._regex_patterns = None

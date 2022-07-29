@@ -2,11 +2,22 @@ from bleach import clean
 from utils.preprocessing.text.text_cleaner import TextCleaner
 import pytest
 
+################################
+# regex note
+################################
+# \n, \r \t -> white space
+# urls
+# https://regex101.com/r/hG9t0Q/1
+# https://regexr.com/3e6m0
+# https://regexr.com/37i6s
+
 DEFAULT_REGEX_PATTERNS = [
-    (r'^\s*', ''), (r'\s*$', ''), (r"\s{2,}", " "), 
-    (r"(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)", '')]
-CUSTOMISED_PATTERN = [(r'\s', 'new pattern')]
+    (r"[\n|\r|\t]", " "), (r'^\s*', ''), (r'\s*$', ''), (r"(?:\s)(\s+)", " "),
+    (r"(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)",
+     '')
+]
 OOV_TOKEN = '<OOV>'
+CUSTOMISED_PATTERN = [(r'\s', 'new pattern')]
 
 
 def test_initialise_obj_without_problem():
@@ -25,6 +36,7 @@ def test_default_instance_attributes():
     assert cleaner.default_regex_patterns == DEFAULT_REGEX_PATTERNS
     assert cleaner.vocab is None
     assert cleaner.out_of_vocab_token == OOV_TOKEN
+
 
 ###
 # test protected attributes
@@ -64,14 +76,9 @@ def test_regex_function_should_use_customised_patterns_if_it_is_not_none():
     assert cleaner._get_regex_patterns() == CUSTOMISED_PATTERN
 
 
-def test_regex_cleaner_function_exist():
-    cleaner = TextCleaner()
-    cleaner.clean("Text to be cleaned")
-
-
 def test_cleaned_text_should_not_contain_leading_and_ending_spaces():
     cleaner = TextCleaner()
-    expected = "text\tto\nclean"
+    expected = "text to clean"
 
     assert cleaner.clean(f"  {expected}  ") == expected
     assert cleaner.clean(f"\n{expected}\n") == expected
@@ -82,7 +89,8 @@ def test_cleaned_text_should_not_contain_leading_and_ending_spaces():
 # TODO: Add more regex patterns test
 def test_cleaned_text_should_not_contain_multiple_spaces_inside():
     cleaner = TextCleaner()
-    assert cleaner.clean("text\t\nto  \nclean") == "text to clean"
+    assert cleaner.clean("text\t\nto  \r\nclean") == "text to clean"
+
 
 def test_n_gram_function():
     words = ['a', 'b', 'c']
@@ -139,6 +147,7 @@ def test_join_words_with_delimiter():
     delimiter_splited_text = 'a|b|c|d|'
     return cleaner.join(words) == delimiter_splited_text
 
+
 def test_if_vocab_is_none_raise_error():
     words = ['a', 'b', 'c', 'd']
     cleaner = TextCleaner()
@@ -154,6 +163,7 @@ def test_convert_tokenised_text_to_sequence_of_indices():
     cleaner.vocab = vocab
     assert cleaner.text_to_sequence(words) == sequence
 
+
 def test_convert_text_to_sequence_out_of_vocab_token():
     cleaner = TextCleaner()
     words = ['a', 'qwert', 'b', 'c', 'd', 'out of vocab']
@@ -162,6 +172,7 @@ def test_convert_text_to_sequence_out_of_vocab_token():
     cleaner.vocab = vocab
     assert cleaner.text_to_sequence(words) == sequence
 
+
 def test_convert_sequence_to_text():
     cleaner = TextCleaner()
     words = ['a', 'b', 'c', 'd']
@@ -169,6 +180,7 @@ def test_convert_sequence_to_text():
     sequence = [1, 2, 3, 4]
     cleaner.vocab = vocab
     assert cleaner.sequence_to_text(sequence) == words
+
 
 def test_convert_text_to_sequence_out_of_vocab_token():
     cleaner = TextCleaner()
