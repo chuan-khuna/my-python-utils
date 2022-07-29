@@ -38,22 +38,21 @@ def test_default_instance_attributes():
     assert cleaner.out_of_vocab_token == OOV_TOKEN
 
 
-###
+################################
 # test protected attributes
-###
-def test_default_regex_should_not_be_able_to_set():
+################################
+def test_default_regex_should_be_protected():
     cleaner = TextCleaner()
     with pytest.raises(AttributeError):
         cleaner.default_regex_patterns = CUSTOMISED_PATTERN
 
 
-# regex_patterns is protected
 def test_customised_patterns_setter():
     cleaner = TextCleaner()
     cleaner.regex_patterns = CUSTOMISED_PATTERN
 
 
-def test_inverse_vocab_should_not_be_able_to_set():
+def test_inverse_vocab_should_be_protected():
     cleaner = TextCleaner()
     with pytest.raises(AttributeError):
         cleaner.inverse_vocab = {1: 'inverse', 2: 'vocab'}
@@ -148,11 +147,18 @@ def test_join_words_with_delimiter():
     return cleaner.join(words) == delimiter_splited_text
 
 
-def test_if_vocab_is_none_raise_error():
+def test_if_vocab_is_none_then_raise_error():
     words = ['a', 'b', 'c', 'd']
     cleaner = TextCleaner()
     with pytest.raises(AttributeError):
         cleaner.text_to_sequence(words)
+
+
+def test_if_inverse_vocab_is_none_then_raise_error():
+    sequence = [1, 2, 3, 4]
+    cleaner = TextCleaner()
+    with pytest.raises(AttributeError):
+        cleaner.sequence_to_text(sequence)
 
 
 def test_convert_tokenised_text_to_sequence_of_indices():

@@ -108,8 +108,9 @@ class TextCleaner:
         return sequence
 
     def sequence_to_text(self, sequence: list[int]) -> list[str]:
-        if self.vocab is None:
+        if self.inverse_vocab is None:
             raise AttributeError(
-                "Vocabulary is None. Please set vocabulary before converting text to sequence")
+                "Inverse Vocabulary is None. Please set vocabulary before converting text to sequence"
+            )
         sequence = self._map_key_to_value(sequence, self.inverse_vocab)
         return sequence
