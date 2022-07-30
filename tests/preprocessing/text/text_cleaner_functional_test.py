@@ -1,4 +1,5 @@
 from utils.preprocessing.text.text_cleaner import TextCleaner
+from utils.preprocessing.text.vocabulary import Vocabulary
 import pytest
 
 # I have a list of texts for NLP tasks
@@ -44,9 +45,14 @@ def test_text_cleaner():
     # then I pass the cleaned texts to a tokeniser
     tokenised_texts = [text.split(' ') for text in cleaned_texts]
     # I pick most used word in text 'vocab'
+    
+    # create a Vocabulary object
+    # without specified OOV token
+    vocab_obj = Vocabulary(special_tokens=[])
+    vocab_obj.from_list(list(vocab.keys()))
     # I set vocab attribute in my cleaner
     # I set OOV token for my cleaner
-    cln.vocab = vocab
+    cln.vocab = vocab_obj.vocab
     cln.out_of_vocab_token = OOV
 
     # I covert my texts to sequences
