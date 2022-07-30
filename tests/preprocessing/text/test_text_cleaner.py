@@ -134,8 +134,8 @@ def test_remove_stop_words_should_work_properly(cleaner):
 
 def test_join_words_with_delimiter(cleaner):
     words = ['a', 'b', 'c', 'd']
-    delimiter_splited_text = 'a|b|c|d|'
-    return cleaner.join(words) == delimiter_splited_text
+    delimiter_splited_text = 'a|b|c|d'
+    assert cleaner.join(words) == delimiter_splited_text
 
 
 def test_text_to_sequence_will_raise_error_if_vocab_is_none(cleaner):
