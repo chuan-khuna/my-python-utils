@@ -21,7 +21,8 @@ class TextCleaner:
     """A string preprocessor including:
         regular expression,
         stop word remover,
-        n gram generator
+        n gram generator,
+        covert a list of words to a list of of indices ('sequence')
     """
 
     def __init__(self, stop_words: list = None, delimiter: str = '|'):
@@ -69,7 +70,6 @@ class TextCleaner:
         for pattern, replace in self._get_regex_patterns():
             pattern = re.compile(pattern)
             text = re.sub(pattern, replace, text)
-
         return text
 
     def generate_n_gram(self, words: list[str], n: int) -> list[tuple[str]]:
