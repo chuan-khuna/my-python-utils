@@ -23,7 +23,7 @@ def test_vocab_default_attributes(vocab):
     assert vocab.vocab == {}
     assert vocab.inverse_vocab == {}
     # return a list of words, input dataframe
-    assert vocab.words == None
+    assert vocab.words == []
     assert vocab.df == None
 
 
@@ -48,6 +48,29 @@ def test_special_tokens_should_come_first_then_words(vocab):
     # if vocabulary is not create from df, df should be None
     assert vocab.df is None
     assert vocab.inverse_vocab == {1: OOV_TOKEN, 2: 'a', 3: 'b'}
+
+
+def test_change_special_tokens_should_update_vocab(vocab):
+    # initialise vocab, special tokens is [OOV]
+
+    # if we update special token to None
+    vocab.special_tokens = None
+    # vocab: dict should be updated, it should contain nothing [] []
+    assert vocab.vocab == {}
+
+    # if we update special token to [OOV]
+    vocab.special_tokens = SPECIAL_TOKENS
+    assert vocab.vocab == {OOV_TOKEN: 1}
+
+    # if we update special token to [OOV]
+    vocab.special_tokens = [OOV_TOKEN, '<punct>']
+    assert vocab.vocab == {OOV_TOKEN: 1, '<punct>': 2}
+
+    vocab.from_list(['a', 'b'])
+    assert vocab.vocab == {OOV_TOKEN: 1, '<punct>': 2, 'a': 3, 'b': 4}
+
+    vocab.special_tokens = [OOV_TOKEN]
+    assert vocab.vocab == {OOV_TOKEN: 1, 'a': 2, 'b': 3}
 
 
 def test_there_are_more_than_one_special_tokens(vocab):

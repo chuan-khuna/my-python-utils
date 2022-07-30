@@ -12,7 +12,7 @@ class Vocabulary:
         # protected attributes
         self._vocab = {}
         self._inverse_vocab = {}
-        self._words = None
+        self._words = []
         self._df = None
 
     @property
@@ -36,13 +36,27 @@ class Vocabulary:
         return self._special_tokens
 
     @special_tokens.setter
-    def special_tokens(self, val: None | list[str]):
-        if val is None:
+    def special_tokens(self, special_tokens: None | list[str]):
+        # backup old tokens
+        prev_special_tokens = self.special_tokens.copy()
+
+        # set new tokens
+        if special_tokens is None:
             self._special_tokens = []
-        elif isinstance(val, list):
-            self._special_tokens = val
+        elif isinstance(special_tokens, list):
+            self._special_tokens = special_tokens
         else:
             raise TypeError("Special tokens should be a list of strings or None, [] empty list")
+
+        # if words is not None -> words are imported
+        # this function should update new vocabulary
+        if prev_special_tokens is None:
+            special_tokens_size = 0
+        else:
+            special_tokens_size = len(prev_special_tokens)
+
+        words_without_tokens = self.words[special_tokens_size:]
+        self.from_list(words_without_tokens)
 
     def _reset_attributes(self):
         self._vocab = {}
