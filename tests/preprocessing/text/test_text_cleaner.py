@@ -1,6 +1,7 @@
 from utils.preprocessing.text.text_cleaner import TextCleaner
 from utils.preprocessing.text.vocabulary import Vocabulary
 import pytest
+from unittest.mock import patch, MagicMock, Mock
 
 ################################
 # regex note
@@ -16,8 +17,18 @@ DEFAULT_REGEX_PATTERNS = [
     (r"(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)",
      '')
 ]
+
 OOV_TOKEN = '<OOV>'
 CUSTOMISED_PATTERN = [(r'\s', 'new pattern')]
+
+
+def generate_mock_vocab(special_tokens=[]):
+    words = ['a', 'b', 'c', 'd']
+    if special_tokens:
+        words = special_tokens + words
+    vocab = {k: i + 1 for i, k in enumerate(words)}
+    inverse_vocab = {i + 1: k for i, k in enumerate(words)}
+    return words, vocab, inverse_vocab
 
 
 @pytest.fixture
@@ -141,57 +152,60 @@ def test_sequence_to_text_will_raise_error_if_inverse_vocab_is_none(cleaner):
 
 
 def test_convert_tokenised_text_to_sequence_of_indices(cleaner):
-    # tokenise text into words
-    words = ['a', 'b', 'c', 'd']
+    # assume that we tokenise text into words
+    # then we have already created vocab obj.
 
-    # it should be mocking data here
-    vocab = Vocabulary()
-    vocab.special_tokens = []
-    vocab.from_list(words)
+    # this test start with OOV is not included in vocabulary
+    # and all words are in vocabulary
+    words, vocab, inverse_vocab = generate_mock_vocab()
+    # Mocking Vocabulary class
+    vocab_mock = Mock(vocab=vocab, inverse_vocab=inverse_vocab)
+
     expected_sequence = [1, 2, 3, 4]
-
-    cleaner.vocab = vocab.vocab
+    cleaner.vocab = vocab_mock.vocab
     assert cleaner.text_to_sequence(words) == expected_sequence
 
 
-def test_convert_text_to_sequence_with_out_of_vocab_token(cleaner):
-    words = ['a', 'qwert', 'b', 'c', 'd', 'out of vocab']
+def test_convert_text_to_sequence_with_OOV_token(cleaner):
 
-    vocab = Vocabulary()
-    vocab.special_tokens = []
-    vocab.from_list(['a', 'b', 'c', 'd'])
-    cleaner.vocab = vocab.vocab
-
+    # What if a text contains words that are not in dictionary?
+    # and OOV token is also not in dictionary
+    words, vocab, inverse_vocab = generate_mock_vocab()
+    text = ['a', 'qwert', 'b', 'c', 'd', 'out of vocab']
+    vocab_mock = Mock(vocab=vocab, inverse_vocab=inverse_vocab)
+    cleaner.vocab = vocab_mock.vocab
     expected_sequence = [1, OOV_TOKEN, 2, 3, 4, OOV_TOKEN]
-    assert cleaner.text_to_sequence(words) == expected_sequence
-    # if there is an OOV token in vocab.keys -> convert it, it not use oov token as text
+    assert cleaner.text_to_sequence(text) == expected_sequence
+
     # Tensorflow's OOV token is set to index 1 ref: preprocessing.text.Tokenizer
-    vocab = Vocabulary()
-    vocab.special_tokens = [OOV_TOKEN]
-    vocab.from_list(['a', 'b', 'c', 'd'])
-    cleaner.vocab = vocab.vocab
-    assert cleaner.text_to_sequence(words) == [2, 1, 3, 4, 5, 1]
+    # OOV token is in vocabulary
+    words, vocab, inverse_vocab = generate_mock_vocab([OOV_TOKEN])
+    vocab_mock = Mock(vocab=vocab, inverse_vocab=inverse_vocab)
+    cleaner.vocab = vocab_mock.vocab
+    assert cleaner.text_to_sequence(text) == [2, 1, 3, 4, 5, 1]
 
 
 def test_convert_sequence_to_text(cleaner):
-    words = ['a', 'b', 'c', 'd']
-    vocab = Vocabulary()
-    vocab.special_tokens = []
-    vocab.from_list(['a', 'b', 'c', 'd'])
+    # all words are in vocabulary and OOV is not in vocabulary
+    words, vocab, inverse_vocab = generate_mock_vocab()
+    vocab_mock = Mock(vocab=vocab, inverse_vocab=inverse_vocab)
     sequence = [1, 2, 3, 4]
-    cleaner.vocab = vocab.vocab
-    assert cleaner.sequence_to_text(sequence) == words
+    expected_words = words
+    cleaner.vocab = vocab_mock.vocab
+    assert cleaner.sequence_to_text(sequence) == expected_words
 
 
 def test_convert_sequence_to_text_with_out_of_vocab_token(cleaner):
-    vocab = {'a': 1, 'b': 2, 'c': 3, 'd': 4}
+
+    # OOV is not in vocabulary
+    words, vocab, inverse_vocab = generate_mock_vocab()
+    vocab_mock = Mock(vocab=vocab, inverse_vocab=inverse_vocab)
     sequence = [1, OOV_TOKEN, 2, 3, 4, OOV_TOKEN]
-    vocab = Vocabulary()
-    vocab.special_tokens = []
-    vocab.from_list(['a', 'b', 'c', 'd'])
-    cleaner.vocab = vocab.vocab
+    cleaner.vocab = vocab_mock.vocab
     assert cleaner.sequence_to_text(sequence) == ['a', OOV_TOKEN, 'b', 'c', 'd', OOV_TOKEN]
-    vocab.special_tokens = [OOV_TOKEN]
-    vocab.from_list(['a', 'b', 'c', 'd'])
-    cleaner.vocab = vocab.vocab
+
+    # OOV is in vocabulary
+    words, vocab, inverse_vocab = generate_mock_vocab([OOV_TOKEN])
+    vocab_mock = Mock(vocab=vocab, inverse_vocab=inverse_vocab)
+    cleaner.vocab = vocab_mock.vocab
     assert cleaner.sequence_to_text([2, 1, 3]) == ['a', OOV_TOKEN, 'b']
