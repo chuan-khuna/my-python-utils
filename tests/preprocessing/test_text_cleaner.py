@@ -1,4 +1,3 @@
-from bleach import clean
 from utils.preprocessing.text.text_cleaner import TextCleaner
 import pytest
 
