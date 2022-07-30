@@ -91,13 +91,19 @@ class TextCleaner:
     def join(self, words: list[str]) -> str:
         return self.delimiter.join(words)
 
+    def _get_oov_token(self):
+        if self.out_of_vocab_token in self.vocab.keys():
+            return self.vocab[self.out_of_vocab_token]
+        else:
+            return self.out_of_vocab_token
+
     def _map_key_to_value(self, sequence: list[str | int], dict_):
         new_sequence = []
         for k in sequence:
             if k in dict_.keys():
                 new_sequence.append(dict_[k])
             else:
-                new_sequence.append(self.out_of_vocab_token)
+                new_sequence.append(self._get_oov_token())
         return new_sequence
 
     def text_to_sequence(self, text: list[str]) -> list[int]:

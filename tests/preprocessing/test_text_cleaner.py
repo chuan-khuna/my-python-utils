@@ -162,12 +162,20 @@ def test_convert_tokenised_text_to_sequence_of_indices(cleaner):
     assert cleaner.text_to_sequence(words) == sequence
 
 
+# re-write OOV logic
+
+
 def test_convert_text_to_sequence_with_out_of_vocab_token(cleaner):
     words = ['a', 'qwert', 'b', 'c', 'd', 'out of vocab']
     vocab = {'a': 1, 'b': 2, 'c': 3, 'd': 4}
     sequence = [1, OOV_TOKEN, 2, 3, 4, OOV_TOKEN]
     cleaner.vocab = vocab
     assert cleaner.text_to_sequence(words) == sequence
+    # if there is an OOV token in vocab.keys -> convert it, it not use oov token as text
+    # Tensorflow's OOV token is set to index 1 ref: preprocessing.text.Tokenizer
+    vocab = {OOV_TOKEN: 1, 'a': 2, 'b': 3, 'c': 4, 'd': 5}
+    cleaner.vocab = vocab
+    assert cleaner.text_to_sequence(words) == [2, 1, 3, 4, 5, 1]
 
 
 def test_convert_sequence_to_text(cleaner):
@@ -178,9 +186,11 @@ def test_convert_sequence_to_text(cleaner):
     assert cleaner.sequence_to_text(sequence) == words
 
 
-def test_convert_text_to_sequence_with_out_of_vocab_token():
-    cleaner = TextCleaner()
+def test_convert_sequence_to_text_with_out_of_vocab_token(cleaner):
     vocab = {'a': 1, 'b': 2, 'c': 3, 'd': 4}
     sequence = [1, OOV_TOKEN, 2, 3, 4, OOV_TOKEN]
     cleaner.vocab = vocab
     assert cleaner.sequence_to_text(sequence) == ['a', OOV_TOKEN, 'b', 'c', 'd', OOV_TOKEN]
+    vocab = {OOV_TOKEN: 1, 'a': 2, 'b': 3, 'c': 4, 'd': 5}
+    cleaner.vocab = vocab
+    assert cleaner.sequence_to_text([2, 1, 3]) == ['a', OOV_TOKEN, 'b']
