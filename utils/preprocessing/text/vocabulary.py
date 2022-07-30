@@ -52,7 +52,6 @@ class Vocabulary:
 
     def from_list(self, words: list[str]):
         self._reset_attributes()
-
         for i, token in enumerate(self.special_tokens + words):
             self._vocab[token] = i + 1
             self._inverse_vocab[i + 1] = token
