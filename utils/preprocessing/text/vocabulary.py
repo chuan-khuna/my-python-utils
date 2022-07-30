@@ -15,6 +15,9 @@ class Vocabulary:
         self._words = []
         self._df = None
 
+        # initilise all attributes
+        self.from_list([])
+
     @property
     def vocab(self):
         return self._vocab
@@ -41,6 +44,7 @@ class Vocabulary:
         prev_special_tokens = self.special_tokens.copy()
 
         # set new tokens
+        # to ensure that the variable is in list format
         if special_tokens is None:
             self._special_tokens = []
         elif isinstance(special_tokens, list):
@@ -48,7 +52,7 @@ class Vocabulary:
         else:
             raise TypeError("Special tokens should be a list of strings or None, [] empty list")
 
-        # if words is not None -> words are imported
+        # if words is not None -> words are imported/initialised
         # this function should update new vocabulary
         if prev_special_tokens is None:
             special_tokens_size = 0

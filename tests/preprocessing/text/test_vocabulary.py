@@ -20,10 +20,10 @@ def test_vocab_default_attributes(vocab):
 
     # these attributes should be protected
     # it will only be updated by special methods, eg from_list and from_data_frame
-    assert vocab.vocab == {}
-    assert vocab.inverse_vocab == {}
+    assert vocab.vocab == {OOV_TOKEN: 1}
+    assert vocab.inverse_vocab == {1: OOV_TOKEN}
     # return a list of words, input dataframe
-    assert vocab.words == []
+    assert vocab.words == [OOV_TOKEN]
     assert vocab.df == None
 
 
