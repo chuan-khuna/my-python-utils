@@ -20,19 +20,23 @@ OOV_TOKEN = '<OOV>'
 CUSTOMISED_PATTERN = [(r'\s', 'new pattern')]
 
 
-def test_initialise_obj_without_problem():
+@pytest.fixture
+def cleaner():
     cleaner = TextCleaner()
+    yield cleaner
+    del cleaner
+
+
+def test_initialise_obj_without_any_problems(cleaner):
     assert isinstance(cleaner, TextCleaner)
 
 
-def test_default_instance_attributes():
-    cleaner = TextCleaner()
-    # None do not drop stop words
+def test_default_attributes(cleaner):
+    # if stop words is None then do nothing(= return the input)
+    # if regex patterns is None then use the default one, the default one is protected
     assert cleaner.stop_words is None
     assert cleaner.delimiter == '|'
-    # if regex_patterns is not set use default patterns
     assert cleaner.regex_patterns is None
-    # add more patterns here
     assert cleaner.default_regex_patterns == DEFAULT_REGEX_PATTERNS
     assert cleaner.vocab is None
     assert cleaner.out_of_vocab_token == OOV_TOKEN
@@ -41,44 +45,43 @@ def test_default_instance_attributes():
 ################################
 # test protected attributes
 ################################
-def test_default_regex_should_be_protected():
-    cleaner = TextCleaner()
+def test_default_regex_should_be_protected(cleaner):
     with pytest.raises(AttributeError):
-        cleaner.default_regex_patterns = CUSTOMISED_PATTERN
+        # try to overide default patterns
+        # default patterns are used as reference
+        cleaner.default_regex_patterns = []
 
 
-def test_customised_patterns_setter():
-    cleaner = TextCleaner()
+def test_customised_patterns_setter(cleaner):
+    # this attribute has the setter method
     cleaner.regex_patterns = CUSTOMISED_PATTERN
 
 
-def test_inverse_vocab_should_be_protected():
-    cleaner = TextCleaner()
+def test_inverse_vocab_should_be_protected(cleaner):
     with pytest.raises(AttributeError):
+        # inverse vocabulary should be protected
+        # the only way to set this is to set vocabulary
         cleaner.inverse_vocab = {1: 'inverse', 2: 'vocab'}
 
 
-def test_inverse_vocab_should_be_matched_with_vocab():
-    cleaner = TextCleaner()
+def test_inverse_vocab_should_be_matched_with_vocab(cleaner):
+    # vocab setter should work properly
+    # When the vocab is set, it will also set inverse vocab
     cleaner.vocab = {'this': 1, 'is': 2, 'vocab': 3}
     assert cleaner.inverse_vocab == {1: 'this', 2: 'is', 3: 'vocab'}
 
 
-def test_regex_function_should_use_default_regex_if_patterns_is_none():
-    cleaner = TextCleaner()
-    assert cleaner._get_regex_patterns() == DEFAULT_REGEX_PATTERNS
+def test_regex_function_should_use_default_regex_if_patterns_is_none(cleaner):
+    assert cleaner._get_regex_patterns() == cleaner.default_regex_patterns
 
 
-def test_regex_function_should_use_customised_patterns_if_it_is_not_none():
-    cleaner = TextCleaner()
+def test_regex_function_should_use_customised_patterns_if_it_is_not_none(cleaner):
     cleaner.regex_patterns = CUSTOMISED_PATTERN
-    assert cleaner._get_regex_patterns() == CUSTOMISED_PATTERN
+    assert cleaner._get_regex_patterns() == cleaner.regex_patterns
 
 
-def test_cleaned_text_should_not_contain_leading_and_ending_spaces():
-    cleaner = TextCleaner()
+def test_cleaned_text_should_not_contain_leading_and_ending_spaces(cleaner):
     expected = "text to clean"
-
     assert cleaner.clean(f"  {expected}  ") == expected
     assert cleaner.clean(f"\n{expected}\n") == expected
     assert cleaner.clean(f"\t{expected}\t") == expected
@@ -86,83 +89,73 @@ def test_cleaned_text_should_not_contain_leading_and_ending_spaces():
 
 
 # TODO: Add more regex patterns test
-def test_cleaned_text_should_not_contain_multiple_spaces_inside():
-    cleaner = TextCleaner()
-    assert cleaner.clean("text\t\nto  \r\nclean") == "text to clean"
+def test_cleaned_text_should_not_contain_multiple_spaces_inside(cleaner):
+    assert cleaner.clean("text\t\nto \t \r\nclean") == "text to clean"
 
 
-def test_n_gram_function():
+def test_n_gram_function(cleaner):
     words = ['a', 'b', 'c']
     n = 2
-    cleaner = TextCleaner()
     n_grams = cleaner.generate_n_gram(words, n)
     assert n_grams == [('a', 'b'), ('b', 'c')]
 
 
-def test_n_gram_function_if_n_is_equal_to_the_number_of_words():
+def test_n_gram_function_if_n_is_equal_to_the_number_of_words(cleaner):
     words = ['a', 'b', 'c']
     n = len(words)
-    cleaner = TextCleaner()
     n_grams = cleaner.generate_n_gram(words, n)
     assert n_grams == [tuple(words)]
 
 
-def test_invalid_n_n_is_less_than_one_in_n_gram_generator():
+def test_invalid_n_n_is_less_than_one_in_n_gram_generator(cleaner):
     with pytest.raises(ValueError):
         words = ['a', 'b', 'c']
         n = 0
-        cleaner = TextCleaner()
-        n_grams = cleaner.generate_n_gram(words, n)
-        assert n_grams == [('a', 'b'), ('b', 'c')]
+        cleaner.generate_n_gram(words, n)
 
 
-def test_invalid_n_n_is_larger_than_the_number_of_words():
+def test_invalid_n_n_is_larger_than_the_number_of_words(cleaner):
     with pytest.raises(ValueError):
         words = ['a', 'b', 'c']
         n = 4
-        cleaner = TextCleaner()
-        n_grams = cleaner.generate_n_gram(words, n)
+        cleaner.generate_n_gram(words, n)
 
 
-def test_remove_stop_words_should_do_nothing_if_stop_words_is_none():
-    cleaner = TextCleaner()
+def test_remove_stop_words_should_do_nothing_if_stop_words_is_none(cleaner):
     # default value of stop words is none
     # do nothing
     words = ['a', 'b', 'c']
     assert cleaner.remove_stop_words(words) == words
 
 
-def test_remove_stop_words_should_work_properly():
-    cleaner = TextCleaner()
+def test_remove_stop_words_should_work_properly(cleaner):
     words = ['a', 'b', 'c', 'd']
     stop_words = ['a', 'c']
     cleaner.stop_words = stop_words
     assert cleaner.remove_stop_words(words) == ['b', 'd']
 
 
-def test_join_words_with_delimiter():
-    cleaner = TextCleaner()
+def test_join_words_with_delimiter(cleaner):
     words = ['a', 'b', 'c', 'd']
     delimiter_splited_text = 'a|b|c|d|'
     return cleaner.join(words) == delimiter_splited_text
 
 
-def test_if_vocab_is_none_then_raise_error():
+def test_text_to_sequence_will_raise_error_if_vocab_is_none(cleaner):
+    # the default value of vocab is None
     words = ['a', 'b', 'c', 'd']
-    cleaner = TextCleaner()
     with pytest.raises(AttributeError):
         cleaner.text_to_sequence(words)
 
 
-def test_if_inverse_vocab_is_none_then_raise_error():
+def test_sequence_to_text_will_raise_error_if_inverse_vocab_is_none(cleaner):
     sequence = [1, 2, 3, 4]
-    cleaner = TextCleaner()
     with pytest.raises(AttributeError):
         cleaner.sequence_to_text(sequence)
 
 
-def test_convert_tokenised_text_to_sequence_of_indices():
-    cleaner = TextCleaner()
+def test_convert_tokenised_text_to_sequence_of_indices(cleaner):
+    # tokenise text into words
     words = ['a', 'b', 'c', 'd']
     vocab = {'a': 1, 'b': 2, 'c': 3, 'd': 4}
     sequence = [1, 2, 3, 4]
@@ -170,8 +163,7 @@ def test_convert_tokenised_text_to_sequence_of_indices():
     assert cleaner.text_to_sequence(words) == sequence
 
 
-def test_convert_text_to_sequence_out_of_vocab_token():
-    cleaner = TextCleaner()
+def test_convert_text_to_sequence_with_out_of_vocab_token(cleaner):
     words = ['a', 'qwert', 'b', 'c', 'd', 'out of vocab']
     vocab = {'a': 1, 'b': 2, 'c': 3, 'd': 4}
     sequence = [1, OOV_TOKEN, 2, 3, 4, OOV_TOKEN]
@@ -179,8 +171,7 @@ def test_convert_text_to_sequence_out_of_vocab_token():
     assert cleaner.text_to_sequence(words) == sequence
 
 
-def test_convert_sequence_to_text():
-    cleaner = TextCleaner()
+def test_convert_sequence_to_text(cleaner):
     words = ['a', 'b', 'c', 'd']
     vocab = {'a': 1, 'b': 2, 'c': 3, 'd': 4}
     sequence = [1, 2, 3, 4]
@@ -188,7 +179,7 @@ def test_convert_sequence_to_text():
     assert cleaner.sequence_to_text(sequence) == words
 
 
-def test_convert_text_to_sequence_out_of_vocab_token():
+def test_convert_text_to_sequence_with_out_of_vocab_token():
     cleaner = TextCleaner()
     vocab = {'a': 1, 'b': 2, 'c': 3, 'd': 4}
     sequence = [1, OOV_TOKEN, 2, 3, 4, OOV_TOKEN]
