@@ -153,7 +153,9 @@ def test_sequence_to_text_will_raise_error_if_inverse_vocab_is_none(cleaner):
 
 def test_convert_tokenised_text_to_sequence_of_indices(cleaner):
     # assume that we tokenise text into words
+    # text = [w1, w2, w3, ...]
     # then we have already created vocab obj.
+    # vocab = {w1: i1, w2: i2, w3: i3, ...}
 
     # this test start with OOV is not included in vocabulary
     # and all words are in vocabulary
@@ -170,11 +172,12 @@ def test_convert_text_to_sequence_with_OOV_token(cleaner):
 
     # What if a text contains words that are not in dictionary?
     # and OOV token is also not in dictionary
+    # skip mapping word that are not in dictionary if OOV is not set
     words, vocab, inverse_vocab = generate_mock_vocab()
     text = ['a', 'qwert', 'b', 'c', 'd', 'out of vocab']
     vocab_mock = Mock(vocab=vocab, inverse_vocab=inverse_vocab)
     cleaner.vocab = vocab_mock.vocab
-    expected_sequence = [1, OOV_TOKEN, 2, 3, 4, OOV_TOKEN]
+    expected_sequence = [1, 2, 3, 4]
     assert cleaner.text_to_sequence(text) == expected_sequence
 
     # Tensorflow's OOV token is set to index 1 ref: preprocessing.text.Tokenizer
@@ -194,15 +197,14 @@ def test_convert_sequence_to_text(cleaner):
     cleaner.vocab = vocab_mock.vocab
     assert cleaner.sequence_to_text(sequence) == expected_words
 
+    # what if there is an index that are not in inverse vocab?
+    # it can't be transalte into words
+    sequence = [1, 2, 3, 4, 20200218]
+    expected_words = words
+    assert cleaner.sequence_to_text(sequence) == expected_words
 
-def test_convert_sequence_to_text_with_out_of_vocab_token(cleaner):
 
-    # OOV is not in vocabulary
-    words, vocab, inverse_vocab = generate_mock_vocab()
-    vocab_mock = Mock(vocab=vocab, inverse_vocab=inverse_vocab)
-    sequence = [1, OOV_TOKEN, 2, 3, 4, OOV_TOKEN]
-    cleaner.vocab = vocab_mock.vocab
-    assert cleaner.sequence_to_text(sequence) == ['a', OOV_TOKEN, 'b', 'c', 'd', OOV_TOKEN]
+def test_convert_sequence_to_text_with_OOV_token(cleaner):
 
     # OOV is in vocabulary
     words, vocab, inverse_vocab = generate_mock_vocab([OOV_TOKEN])

@@ -26,7 +26,7 @@ vocab = {
 
 OOV = '<OOVtoken>'
 
-expected_sequences = [[1, 2, 3, 4, 5], [6, 7, OOV], [OOV, 8, OOV, 9, OOV, 1]]
+expected_sequences = [[1, 2, 3, 4, 5], [6, 7], [8, 9, 1]]
 
 
 def test_text_cleaner():
@@ -56,6 +56,7 @@ def test_text_cleaner():
     cln.out_of_vocab_token = OOV
 
     # I covert my texts to sequences
+    # It should skip mapping word->ind if word is not in vocab
     sequences = [cln.text_to_sequence(cleaned_text) for cleaned_text in tokenised_texts]
     assert sequences == expected_sequences
 

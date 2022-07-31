@@ -39,7 +39,15 @@ def test_if_there_is_no_special_token_words_should_start_at_index_one(vocab):
     assert vocab.special_tokens == []
     assert vocab.inverse_vocab == expected_inverse_vocab
 
-
+def test_vocabulary_should_handle_duplicated_words(vocab):
+    vocab.special_tokens = None
+    words = ['a', 'b', 'a', 'a', 'b']
+    expected_vocab = {'a': 1, 'b': 2}
+    expected_inverse_vocab = {1: 'a', 2: 'b'}
+    vocab.from_list(words)
+    assert vocab.vocab == expected_vocab
+    assert vocab.inverse_vocab == expected_inverse_vocab
+    
 def test_special_tokens_should_come_first_then_words(vocab):
     words = ['a', 'b']
     expected_vocab = {OOV_TOKEN: 1, 'a': 2, 'b': 3}

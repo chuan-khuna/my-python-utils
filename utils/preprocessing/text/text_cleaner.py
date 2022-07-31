@@ -94,15 +94,16 @@ class TextCleaner:
     def _get_oov_token(self):
         if self.out_of_vocab_token in self.vocab.keys():
             return self.vocab[self.out_of_vocab_token]
-        else:
-            return self.out_of_vocab_token
 
     def _map_key_to_value(self, sequence: list[str | int], dict_):
         new_sequence = []
         for k in sequence:
+            # if k(ie word or ind) is in dictionary
             if k in dict_.keys():
                 new_sequence.append(dict_[k])
-            else:
+            # For text -> sequence process: if oov token is in vocab, then map it
+            # For sequence -> text this else if is not considered
+            elif self._get_oov_token():
                 new_sequence.append(self._get_oov_token())
         return new_sequence
 
